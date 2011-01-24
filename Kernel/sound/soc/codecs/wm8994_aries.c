@@ -20,6 +20,7 @@
 #include <plat/regs-clock.h>
 #include <mach/gpio-jupiter.h>
 #include "wm8994.h"
+#include "wm8994_voodoo.h"
 
 //------------------------------------------------
 //		Debug Feature
@@ -1081,6 +1082,10 @@ void wm8994_record_main_mic(struct snd_soc_codec *codec)
     	}    
     	val = (WM8994_IN1LN_TO_IN1L | WM8994_IN2LN_TO_IN2L);
     	wm8994_write(codec, 0x0028, 0x0040);    // Input Mixer 2
+
+#ifdef CONFIG_SND_VOODOO_RECORD_PRESETS
+	voodoo_hook_record_main_mic();
+#endif
     	
     	val = wm8994_read(codec,WM8994_POWER_MANAGEMENT_4 );
     	val &= ~(WM8994_ADCL_ENA_MASK |WM8994_AIF1ADC1L_ENA_MASK  );
@@ -1270,6 +1275,10 @@ void wm8994_set_playback_headset(struct snd_soc_codec *codec)
 	wm8994_write(codec, 0x0054, 0x000F);    // DC Servo 1
 
 	msleep(20);
+
+#ifdef CONFIG_SND_VOODOO
+	voodoo_hook_playback_headset();
+#endif
 	
 	wm8994_write(codec, 0x0060, 0x00EE);    // Analogue HP 1
 	wm8994_write(codec, 0x0610, 0x01C0);    // DAC1 Left Volume
@@ -2672,6 +2681,10 @@ void wm8994_set_fmradio_headset(struct snd_soc_codec *codec)
 	val &= ~(WM8994_DAC1R_MUTE_MASK | WM8994_DAC1R_VOL_MASK);
 	val |= (WM8994_DAC1_VU | TUNING_DAC1R_VOL); //0 db volume	
 	wm8994_write(codec,WM8994_DAC1_RIGHT_VOLUME,val);
+
+#ifdef CONFIG_SND_VOODOO_FM
+	voodoo_hook_fmradio_headset();
+#endif
 
 	//DAC1 Unmute
 	wm8994_write(codec, WM8994_AIF1_DAC1_FILTERS_1, 0x0000);
