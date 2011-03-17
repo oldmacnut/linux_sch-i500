@@ -20,7 +20,9 @@
 #include <plat/regs-clock.h>
 #include <mach/gpio-jupiter.h>
 #include "wm8994.h"
+#ifdef CONFIG_SND_VOODOO
 #include "wm8994_voodoo.h"
+#endif
 
 //------------------------------------------------
 //		Debug Feature
@@ -1275,10 +1277,6 @@ void wm8994_set_playback_headset(struct snd_soc_codec *codec)
 	wm8994_write(codec, 0x0054, 0x000F);    // DC Servo 1
 
 	msleep(20);
-
-#ifdef CONFIG_SND_VOODOO
-	voodoo_hook_playback_headset();
-#endif
 	
 	wm8994_write(codec, 0x0060, 0x00EE);    // Analogue HP 1
 	wm8994_write(codec, 0x0610, 0x01C0);    // DAC1 Left Volume

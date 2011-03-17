@@ -36,7 +36,9 @@
 #include <plat/map-base.h>
 #include <plat/regs-clock.h>
 #include "wm8994.h"
+#ifdef CONFIG_SND_VOODOO
 #include "wm8994_voodoo.h"
+#endif
 #ifdef FEATURE_SS_AUDIO_CAL
 #include <linux/proc_fs.h>
 #include <mach/sec_jack.h>
