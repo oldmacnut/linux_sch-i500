@@ -2680,10 +2680,6 @@ void wm8994_set_fmradio_headset(struct snd_soc_codec *codec)
 	val |= (WM8994_DAC1_VU | TUNING_DAC1R_VOL); //0 db volume	
 	wm8994_write(codec,WM8994_DAC1_RIGHT_VOLUME,val);
 
-#ifdef CONFIG_SND_VOODOO_FM
-	voodoo_hook_fmradio_headset();
-#endif
-
 	//DAC1 Unmute
 	wm8994_write(codec, WM8994_AIF1_DAC1_FILTERS_1, 0x0000);
 
